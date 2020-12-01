@@ -11,8 +11,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 <?php
 
-
-
 include('database_connection.php');
 
 $query = "
@@ -78,6 +76,8 @@ $result = $statement->fetchAll();
        </form>
        <br />
        <div class="list-group">
+
+
        <?php
        foreach($result as $row)
        {
@@ -89,6 +89,8 @@ $result = $statement->fetchAll();
         echo '<a href="#" style="'.$style.'" class="list-group-item" id="list-group-item-'.$row["task_list_id"].'" data-id="'.$row["task_list_id"].'">'.$row["task_details"].' <span class="badge" data-id="'.$row["task_list_id"].'">X</span></a>';
        }
        ?>
+
+
        </div>
       </div>
      </div>
