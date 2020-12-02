@@ -18,7 +18,8 @@ define('DB_NAME', 'todoproj');
 $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
  
 // Check connection
-if($link === false){
+if($link === false){ 
+
     die("ERROR: Could not connect. " . mysqli_connect_error());
 }
 
@@ -107,30 +108,62 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <title>Login</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
-        body{ font: 14px sans-serif; }
-        .wrapper{ width: 350px; padding: 20px; }
+       
+        
+        body{   
+            font: 14px sans-serif;
+            background: linear-gradient(to right, #9b9a9c, #403f41);
+            }
+
+
+        .wrapper{ 
+                background-color: lightgrey;
+                width: 100%;
+                border: 2px solid black;
+                padding: 40px;
+                margin: 20px;
+            }
+
+        .box{
+            padding: 5% 20% 5% 20%;
+        }
+
+        .buttons{
+            text-align :center;
+            padding:3px;
+        }
+        .login{
+            text-align:center;
+        }
+        
+           
     </style>
 </head>
 <body>
+
+   <div class="box">
     <div class="wrapper">
-        <h2>Login</h2>
-        <p>Please fill in your credentials to login.</p>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
-                <label>Username</label>
-                <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
-                <span class="help-block"><?php echo $username_err; ?></span>
-            </div>    
-            <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
-                <label>Password</label>
-                <input type="password" name="password" class="form-control">
-                <span class="help-block"><?php echo $password_err; ?></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Login">
-            </div>
-            <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
-        </form>
-    </div>    
+            <h2 class="login">Login</h2>
+            <p>Please fill in your credentials to login.</p>
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
+                    <label>Username</label>
+                    <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
+                    <span class="help-block"><?php echo $username_err; ?></span>
+                </div>    
+                <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
+                    <label>Password</label>
+                    <input type="password" name="password" class="form-control">
+                    <span class="help-block"><?php echo $password_err; ?></span>
+                </div>
+                <div class="form-group">
+                    <div class="buttons">
+                        <input type="submit" class="btn btn-primary" value="Login">
+                    </div>
+                </div>
+                <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
+            </form>
+        </div>  
+   </div>
 </body>
 </html>

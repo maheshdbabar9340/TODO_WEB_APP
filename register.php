@@ -1,24 +1,21 @@
 <?php
-/* Database credentials. Assuming you are running MySQL
-server with default setting (user 'root' with no password) */
+
 define('DB_SERVER', 'localhost');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
 define('DB_NAME', 'todoproj');
  
-/* Attempt to connect to MySQL database */
+
 $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
  
-// Check connection
+
 if($link === false){
     die("ERROR: Could not connect. " . mysqli_connect_error());
 }
 
 
-// Include config file
 
- 
-// Define variables and initialize with empty values
+
 $username = $password = $confirm_password = "";
 $username_err = $password_err = $confirm_password_err = "";
  
@@ -116,36 +113,64 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <title>Sign Up</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
-        body{ font: 14px sans-serif; }
-        .wrapper{ width: 350px; padding: 20px; }
+       
+       body{   
+            font: 14px sans-serif;
+            background: linear-gradient(to right, #9b9a9c, #403f41);
+            }
+        .wrapper{ 
+                background-color: lightgrey;
+                width: 100%;
+                border: 2px solid black;
+                padding: 25px 40px;
+                margin: 20px;
+            }
+        h2.Signup{
+            text-align: center;
+        }
+        
+        .box{
+            padding: 5% 20% 5% 20%;
+        }
+        
+        .buttons{
+            text-align :center;
+            padding:3px;
+        }
+      
     </style>
 </head>
 <body>
-    <div class="wrapper">
-        <h2>Sign Up</h2>
-        <p>Please fill this form to create an account.</p>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
-                <label>Username</label>
-                <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
-                <span class="help-block"><?php echo $username_err; ?></span>
-            </div>    
-            <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
-                <label>Password</label>
-                <input type="password" name="password" class="form-control" value="<?php echo $password; ?>">
-                <span class="help-block"><?php echo $password_err; ?></span>
-            </div>
-            <div class="form-group <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
-                <label>Confirm Password</label>
-                <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
-                <span class="help-block"><?php echo $confirm_password_err; ?></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Submit">
-                <input type="reset" class="btn btn-default" value="Reset">
-            </div>
-            <p>Already have an account? <a href="index.php">Login here</a>.</p>
-        </form>
-    </div>    
+    <div class="box">
+        <div class="wrapper">
+            <h2 class="Signup">Sign Up</h2>
+            <p>Please fill this form to create an account.</p>
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
+                    <label>Username</label>
+                    <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
+                    <span class="help-block"><?php echo $username_err; ?></span>
+                </div>    
+                <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
+                    <label>Password</label>
+                    <input type="password" name="password" class="form-control" value="<?php echo $password; ?>">
+                    <span class="help-block"><?php echo $password_err; ?></span>
+                </div>
+                <div class="form-group <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
+                    <label>Confirm Password</label>
+                    <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
+                    <span class="help-block"><?php echo $confirm_password_err; ?></span>
+                </div>
+                <div class="form-group">
+                    <div class="buttons">
+                            <input type="submit" class="btn btn-primary" value="Submit">
+
+                            <input type="reset" class="btn btn-default" value="Reset">
+                    </div>
+                </div>
+                <p>Already have an account? <a href="index.php">Login here</a>.</p>
+            </form>
+        </div>    
+    </div>
 </body>
 </html>

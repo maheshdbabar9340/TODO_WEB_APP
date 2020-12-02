@@ -15,7 +15,7 @@ include('database_connection.php');
 
 $query = "
  SELECT * FROM task_list 
- WHERE user_id = '".$_SESSION["user_id"]."' 
+ WHERE username = '".$_SESSION["username"]."' 
  ORDER BY task_list_id DESC
 ";
 
@@ -30,76 +30,114 @@ $result = $statement->fetchAll();
 <!DOCTYPE html>
 <html>
  <head>
+
+ 
   <title>Developed To-Do List in PHP using Ajax</title>  
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <style>
-   body
-   {
-    font-family: 'Comic Sans MS';
-   }
+        
+        body{   
+            font: 14px sans-serif;
+            background: linear-gradient(to right, #9b9a9c, #403f41);
+            }
+   
+            
+            .list-group-item
+                    {
+                        font-size: 26px;
+                    }
+            .page-header{
+                padding-top:10px;
+                text-align:center;
+            }
 
-   .list-group-item
-   {
-    font-size: 26px;
-   }
+           
+
+            .container{
+                background-color:lightgrey;
+            }
+
+            .page-footer{
+                padding-top:50px;
+                text-align:center;
+            }
+
+            
+           
+
   </style>
+
  </head>
- <body>
-  
-  <br />
-  <br />
-  <div class="container">
-   <h1 align="center">TODO APP </h1>
-   <br />
-   <div class="panel panel-default">
-    <div class="panel-heading">
-     <div class="row">
-      <div class="col-md-9">
-       <h3 class="panel-title">My To-Do List</h3>
-      </div>
-      <div class="col-md-3">
-       
-      </div>
-     </div>
-    </div>
-      <div class="panel-body">
-       <form method="post" id="to_do_form">
-        <span id="message"></span>
-        <div class="input-group">
-         <input type="text" name="task_name" id="task_name" class="form-control input-lg" autocomplete="off" placeholder="Title..." />
-         <div class="input-group-btn">
-          <button type="submit" name="submit" id="submit" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-plus"></span></button>
-         </div>
+
+    <body>
+            <div class="page-header">
+                    <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to our site.</h1>
+                </div>
+            
+            <br />
+            <br />
+            <div class="container">
+            <h1 align="center">TODO APP </h1>
+            <br />
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                <div class="row">
+                <div class="col-md-9">
+                <h3 class="panel-title">My To-Do List</h3>
+                </div>
+                <div class="col-md-3">
+                
+                </div>
+                </div>
+                </div>
+                <div class="panel-body">
+                <form method="post" id="to_do_form">
+                    <span id="message"></span>
+                    <div class="input-group">
+                    <input type="text" name="task_name" id="task_name" class="form-control input-lg" autocomplete="off" placeholder="Title..." />
+                    <div class="input-group-btn">
+                    <button type="submit" name="submit" id="submit" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-plus"></span></button>
+                    </div>
+                    </div> 
+                </form>
+                <br />
+                <div class="list-group">
+                
+
+
+            <?php
+                        foreach($result as $row)
+                        {
+                            $style = '';
+                            if($row["task_status"] == 'yes')
+                            {
+                            $style = 'text-decoration: line-through';
+                            }
+                            echo '<a href="#" style="'.$style.'" class="list-group-item" id="list-group-item-'.$row["task_list_id"].'" data-id="'.$row["task_list_id"].'">'.$row["created_at"].' '."....>> ".''.$row["task_details"].' <span class="badge" data-id="'.$row["task_list_id"].'">delete</span></a>';
+                        }
+            ?>
+
+
+
+
+            </div>
         </div>
-       </form>
-       <br />
-       <div class="list-group">
+    </div>
+    </div>
 
 
-       <?php
-       foreach($result as $row)
-       {
-        $style = '';
-        if($row["task_status"] == 'yes')
-        {
-         $style = 'text-decoration: line-through';
-        }
-        echo '<a href="#" style="'.$style.'" class="list-group-item" id="list-group-item-'.$row["task_list_id"].'" data-id="'.$row["task_list_id"].'">'.$row["task_details"].' <span class="badge" data-id="'.$row["task_list_id"].'">X</span></a>';
-       }
-       ?>
+    <p class="page-footer"> 
+        <a href="logout.php" class="btn btn-danger">Sign Out of Your Account</a>
+    </p>
 
-
-       </div>
-      </div>
-     </div>
-  </div>
- </body>
-</html>
 
 <script>
- 
+
+
+                
+
  $(document).ready(function(){
   
   $(document).on('submit', '#to_do_form', function(event){
@@ -113,19 +151,27 @@ $result = $statement->fetchAll();
    else
    {
     $('#submit').attr('disabled', 'disabled');
+    var  user_id=<?php echo $_SESSION["user_id"]?>,
+        username="<?php echo $_SESSION["username"] ?>",
+        task_name=$("#task_name").val();
+
     $.ajax({
      url:"add_task.php",
      method:"POST",
-     data:$(this).serialize(),
+     data:{user_id:user_id,username:username,task_name:task_name},
      success:function(data)
      {
+        //  console.log(data);
       $('#submit').attr('disabled', false);
       $('#to_do_form')[0].reset();
+      
       $('.list-group').prepend(data);
      }
     })
    }
   });
+
+
 
   $(document).on('click', '.list-group-item', function(){
    var task_list_id = $(this).data('id');
@@ -140,6 +186,7 @@ $result = $statement->fetchAll();
    })
   });
 
+  
   $(document).on('click', '.badge', function(){
    var task_list_id = $(this).data('id');
    $.ajax({
@@ -155,26 +202,6 @@ $result = $statement->fetchAll();
 
  });
 </script>
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Welcome</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-    <style type="text/css">
-        body{ font: 14px sans-serif; text-align: center; }
-    </style>
-</head>
-<body>
-    <div class="page-header">
-        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to our site.</h1>
-    </div>
-    <p>
-       
-        <a href="logout.php" class="btn btn-danger">Sign Out of Your Account</a>
-    </p>
-</body>
+ </body>
 </html>
+
